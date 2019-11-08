@@ -5,16 +5,18 @@ const Room = require('../models/room');
 
 /* View all rooms*/
 router.get('/', function (req, res, next) {
-  Room.find(function (err, docs) {
-    if (err) {
-      res.json(err);
-    }
-    const roomChunks = [];
-    const chunkSize = 6;
-    for (let i = 0; i < docs.length; i += chunkSize) {
-      roomChunks.push(docs.slice(i, i + chunkSize));
-    }
-    res.json(roomChunks)
+  const pageSize = parseInt((req.query.pageSize > 0) ? req.query.pageSize : 1);
+  const pageIndex = (req.query.pageIndex > 0) ? req.query.pageIndex : 1;
+  const skipDoc = (pageIndex - 1) * pageSize;
+
+  Room.estimatedDocumentCount((err, totalRoom) => {
+    if (err) return res.json(err);
+    Room.find(null, null, { limit: pageSize, skip: skipDoc }, function (err, roomChunks) {
+      if (err) {
+        res.json(err);
+      }
+      res.json({ roomChunks, totalRoom });
+    });
   });
 });
 

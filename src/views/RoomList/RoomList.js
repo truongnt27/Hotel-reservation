@@ -34,6 +34,9 @@ const RoomList = () => {
   const [rooms, setRooms] = useState([]);
   const [open, setOpen] = useState(initPopup);
   const [selectedRoom, setSelectedRoom] = useState({});
+  const [pageIndex, setPageIndex] = useState(1);
+  const pageSize = 6;
+  const [totalRoom, setTotalRoom] = useState(0);
 
   const handleSelect = (room) => {
     setSelectedRoom(room);
@@ -70,16 +73,29 @@ const RoomList = () => {
     setOpen(initPopup);
   };
 
+  const handlePagination = (type) => {
+    if (type === 'prev') setPageIndex(prev => {
+      return (prev == 1) ? 1 : prev - 1;
+    });
+    if (type === 'next') setPageIndex(prev => {
+      return (prev * pageSize > totalRoom) ? prev : prev + 1;
+    });
+  }
   useEffect(() => {
-    Axios.get('http://localhost:5000/rooms')
+    Axios.get('http://localhost:5000/rooms', {
+      params: {
+        pageIndex,
+        pageSize
+      }
+    })
       .then(res => {
-        console.log(res.data);
-        setRooms(res.data[0]);
+        setRooms(res.data.roomChunks);
+        setTotalRoom(res.data.totalRoom);
       })
       .catch(err => {
         console.log(err);
       })
-  }, [])
+  }, [pageIndex])
   console.log(selectedRoom.id);
   return (
     <div className={classes.root}>
@@ -89,8 +105,7 @@ const RoomList = () => {
           container
           spacing={3}
         >
-          {rooms.map(room => (
-
+          {rooms ? rooms.map(room => (
             <Grid
               item
               key={room.id}
@@ -104,15 +119,15 @@ const RoomList = () => {
                 room={room}
               />
             </Grid>
-          ))}
+          )) : <Typography variant="body1">No rooms.</Typography>}
         </Grid>
       </div>
       <div className={classes.pagination}>
-        <Typography variant="caption">1-6 of 20</Typography>
-        <IconButton>
+        <Typography variant="caption">{(pageIndex - 1) * pageSize + 1} - {(pageIndex * 6 > totalRoom) ? totalRoom : (pageIndex * pageSize)} of {totalRoom}</Typography>
+        <IconButton onClick={() => handlePagination('prev')}>
           <ChevronLeftIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => handlePagination('next')}>
           <ChevronRightIcon />
         </IconButton>
       </div>
