@@ -9,9 +9,16 @@ router.get('/', function (req, res, next) {
   const pageIndex = (req.query.pageIndex > 0) ? req.query.pageIndex : 1;
   const skipDoc = (pageIndex - 1) * pageSize;
 
-  Room.estimatedDocumentCount((err, totalRoom) => {
+  const type = req.query.type ? req.query.type : '';
+  const sortBy = req.query.sortBy ? req.query.sortBy : '';
+  const price = (req.query.price > 0) ? parseInt(req.query.price) : 0;
+  const filter = {};
+  if (type) filter.type = type;
+  if (price) filter.price = { $lt: price + 1 };
+  Room.find(filter, (err, docs) => {
     if (err) return res.json(err);
-    Room.find(null, null, { limit: pageSize, skip: skipDoc }, function (err, roomChunks) {
+    const totalRoom = docs.length;
+    Room.find(filter, null, { sort: sortBy, limit: pageSize, skip: skipDoc }, function (err, roomChunks) {
       if (err) {
         res.json(err);
       }

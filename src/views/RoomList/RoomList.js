@@ -37,6 +37,20 @@ const RoomList = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const pageSize = 6;
   const [totalRoom, setTotalRoom] = useState(0);
+  const [roomFilter, setroomFilter] = useState({
+    type: '',
+    sortBy: '',
+    price: 0
+  })
+
+  const handleFilter = (event) => {
+    event.persist();
+    setroomFilter(prev => ({
+      ...prev,
+      [event.target.name]: event.target.value
+    }));
+    setPageIndex(1);
+  }
 
   const handleSelect = (room) => {
     setSelectedRoom(room);
@@ -85,7 +99,8 @@ const RoomList = () => {
     Axios.get('http://localhost:5000/rooms', {
       params: {
         pageIndex,
-        pageSize
+        pageSize,
+        ...roomFilter
       }
     })
       .then(res => {
@@ -95,11 +110,15 @@ const RoomList = () => {
       .catch(err => {
         console.log(err);
       })
-  }, [pageIndex])
+  }, [pageIndex, roomFilter])
   console.log(selectedRoom.id);
   return (
     <div className={classes.root}>
-      <RoomsToolbar onOpenPopup={handleClickOpen} />
+      <RoomsToolbar
+        onChangeFilter={handleFilter}
+        onOpenPopup={handleClickOpen}
+        roomFilter={roomFilter}
+      />
       <div className={classes.content}>
         <Grid
           container

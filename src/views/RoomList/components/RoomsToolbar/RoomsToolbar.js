@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Button } from '@material-ui/core';
+import { Button, Grid, Select } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { SearchInput } from 'components';
 
@@ -21,17 +21,33 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
   searchInput: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(3)
   },
   button: {
     marginRight: theme.spacing(1),
+  },
+  inputType: {
+    marginRight: theme.spacing(2),
+  },
+  sortBy: {
+    marginRight: theme.spacing(2),
+  },
+  inputPrice: {
+    width: '150px'
   }
 }));
 
 const RoomsToolbar = props => {
   const { className, ...rest } = props;
-
+  const types = ['single', 'double', 'family'];
+  const sortBy = ['name', 'price', 'size', 'capacity'];
   const classes = useStyles();
+
+  const handleChange = (event) => {
+    props.onChangeFilter(event)
+  };
+
+
   const handleOpen = () => {
     props.onOpenPopup('add')
   }
@@ -48,6 +64,47 @@ const RoomsToolbar = props => {
           className={classes.searchInput}
           placeholder="Search room"
         />
+        <Grid className={classes.inputType}>
+          <Typography >Type</Typography>
+          <Select
+            inputProps={{
+              name: 'type',
+            }}
+            native
+            onChange={handleChange}
+          >
+            <option value="" />
+            {types.map(type => {
+              return <option value={type} >{type}</option>
+            })}
+          </Select>
+        </Grid>
+        <Grid className={classes.sortBy}>
+          <Typography >Sort by</Typography>
+          <Select
+            inputProps={{
+              name: 'sortBy',
+            }}
+            native
+            onChange={handleChange}
+          >
+            <option value="" />
+            {sortBy.map(field => {
+              return <option value={field} >{field}</option>
+            })}
+          </Select>
+        </Grid>
+        <Grid className={classes.inputPrice} >
+          <Typography >Price {props.roomFilter.price}$</Typography>
+          <input
+            max={1000}
+            min={0}
+            name="price"
+            onChange={handleChange}
+            type="range"
+            valueLabelDisplay="auto"
+          />
+        </Grid>
         <span className={classes.spacer} />
         <Button
           className={classes.button}
