@@ -6,6 +6,8 @@ import { Button, Grid, Select } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { SearchInput } from 'components';
 
+import Axios from 'axios';
+import FileSaver from 'file-saver';
 const useStyles = makeStyles(theme => ({
   root: {},
   row: {
@@ -46,7 +48,19 @@ const RoomsToolbar = props => {
   const handleChange = (event) => {
     props.onChangeFilter(event)
   };
-
+  const handleExport = () => {
+    Axios({
+      url: 'http://localhost:5000/rooms/exportExcel',
+      method: 'GET',
+      responseType: 'blob',
+    }).then((response) => {
+      try {
+        FileSaver.saveAs(new Blob([response.data]), 'room_list.xlsx');
+      } catch (error) {
+        console.log('Save file failed !!!');
+      }
+    })
+  }
 
   const handleOpen = () => {
     props.onOpenPopup('add')
@@ -108,6 +122,7 @@ const RoomsToolbar = props => {
         <span className={classes.spacer} />
         <Button
           className={classes.button}
+          onClick={handleExport}
           title="Export"
         >
           export

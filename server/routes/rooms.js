@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Room = require('../models/room');
+const xlsx = require('xlsx');
 
 /* View all rooms*/
 router.get('/', function (req, res, next) {
@@ -78,4 +79,43 @@ router.post('/deleteRoom', function (req, res, next) {
   })
 });
 
+
+/*export excel rooms*/
+router.get('/exportExcel', function (req, res, next) {
+  Room.find((err, rooms) => {
+    if (err) return err;
+    const clearedArr = rooms.map(({ name, price, type, capacity, size, id, pets, breakfast }) => {
+      return { id, name, type, price, size, capacity, pets, breakfast };
+    });
+    const wb = xlsx.utils.book_new();
+    const date = new Date().toLocaleString();
+    const title = [
+      ['List of room in hotel'],
+      [date]
+    ];
+    const ws = xlsx.utils.aoa_to_sheet(title, { origin: 'A2' });
+    xlsx.utils.sheet_add_json(ws, clearedArr, { origin: 'A5' });
+    ws['!merges'] = [xlsx.utils.decode_range('A2:H2'), xlsx.utils.decode_range('A3:C3')];
+    wb.Props = {
+      Title: 'List of rooms',
+      Subject: 'List of rooms'
+    }
+    wb.SheetNames.push('RoomList');
+    const wscols = [
+      { wch: 12 },
+      { wch: 20 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 12 }
+    ]
+    ws['!cols'] = wscols;
+    wb.Sheets['RoomList'] = ws;
+    const filename = `./excels/${Date.now()}_room_list.xlsx`;
+    xlsx.writeFile(wb, filename);
+    res.download(filename);
+  })
+})
 module.exports = router;
