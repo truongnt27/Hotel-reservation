@@ -7,7 +7,8 @@ import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import {
   RoomList as RoomListView,
   RoomDetail as RoomDetailView,
-  NotFound as NotFoundView
+  NotFound as NotFoundView,
+  BookingList as BookingListView
 } from './views';
 
 const Routes = () => {
@@ -23,6 +24,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/rooms"
+      />
+      <RouteWithLayout
+        component={BookingListView}
+        exact
+        layout={MainLayout}
+        path="/bookings"
       />
       <RouteWithLayout
         component={RoomDetailView}

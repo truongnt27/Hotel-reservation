@@ -7,6 +7,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const roomsRouter = require('./routes/rooms');
 const usersRouter = require('./routes/users');
+const bookingsRouter = require('./routes/bookings');
 const cors = require('cors');
 
 const app = express();
@@ -24,5 +25,6 @@ app.use(cors({
 }));
 app.use('/rooms', roomsRouter);
 app.use('/users', usersRouter);
+app.use('/bookings', bookingsRouter);
 
 module.exports = app;

@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import ListIcon from '@material-ui/icons/ListAlt';
 
 import { Profile, SidebarNav } from './components';
 
@@ -49,7 +49,7 @@ const Sidebar = props => {
     {
       title: 'Bookings',
       href: '/bookings',
-      icon: <PeopleIcon />
+      icon: <ListIcon />
     },
     {
       title: 'Rooms',
