@@ -108,8 +108,8 @@ const BookingTable = props => {
                   <TableCell>Full Name</TableCell>
                   <TableCell>Phone</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Booking Room</TableCell>
-                  <TableCell>Booking Date</TableCell>
+                  <TableCell>Booked Rooms</TableCell>
+                  <TableCell>Check In/Out Date</TableCell>
                   <TableCell>Total Amount</TableCell>
                 </TableRow>
               </TableHead>
@@ -145,8 +145,8 @@ const BookingTable = props => {
                       <TableCell>{booking.name}</TableCell>
                       <TableCell>{booking.phone}</TableCell>
                       <TableCell>{booking.email}</TableCell>
-                      <TableCell>{booking.bookingRoom.id}</TableCell>
-                      <TableCell>{moment(booking.bookingDate[0]).format('DD/MM/YYYY')}-{moment(booking.bookingDate[1]).format('DD/MM/YYYY')}</TableCell>
+                      <TableCell>{booking.bookedRooms.map(room => room.id)}</TableCell>
+                      <TableCell>{moment(booking.checkInDate).format('DD/MM/YYYY')}-{moment(booking.checkOutDate).format('DD/MM/YYYY')}</TableCell>
                       <TableCell>
                         {booking.totalAmount}$
                       </TableCell>

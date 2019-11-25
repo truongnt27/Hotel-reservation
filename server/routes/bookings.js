@@ -5,7 +5,7 @@ const Booking = require('../models/booking');
 
 /*Get booking list*/
 router.get('/', function (req, res, next) {
-  Booking.find().populate('bookingRoom').exec((err, bookings) => {
+  Booking.find().populate('bookedRooms').exec((err, bookings) => {
     if (err) return res.json(err);
     res.json(bookings);
   })
