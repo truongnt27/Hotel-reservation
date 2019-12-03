@@ -115,17 +115,53 @@ const BookingTable = props => {
               </TableHead>
               <TableBody>
                 {loading ? (
-                  <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox />
-                    </TableCell>
-                    <TableCell><Skeleton variant="rect" /></TableCell>
-                    <TableCell><Skeleton variant="rect" /></TableCell>
-                    <TableCell><Skeleton variant="rect" /></TableCell>
-                    <TableCell><Skeleton variant="rect" /></TableCell>
-                    <TableCell><Skeleton variant="rect" /></TableCell>
-                    <TableCell><Skeleton variant="rect" /></TableCell>
-                  </TableRow>) :
+                  <>
+                    <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox />
+                      </TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox />
+                      </TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox />
+                      </TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox />
+                      </TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                      <TableCell><Skeleton variant="rect" /></TableCell>
+                    </TableRow>
+                  </>
+                ) :
                   bookings.slice(0, rowsPerPage).map(booking => (
                     <TableRow
                       className={classes.tableRow}
@@ -142,13 +178,13 @@ const BookingTable = props => {
                         />
                       </TableCell>
                       <TableCell>{booking._id}</TableCell>
-                      <TableCell>{booking.name}</TableCell>
+                      <TableCell>{booking.fullname}</TableCell>
                       <TableCell>{booking.phone}</TableCell>
                       <TableCell>{booking.email}</TableCell>
-                      <TableCell>{booking.bookedRooms.map(room => room.id)}</TableCell>
+                      <TableCell>{booking.bookedRooms.map(room => room.id).join(',')}</TableCell>
                       <TableCell>{moment(booking.checkInDate).format('DD/MM/YYYY')}-{moment(booking.checkOutDate).format('DD/MM/YYYY')}</TableCell>
                       <TableCell>
-                        {booking.totalAmount}$
+                        ${booking.totalAmount}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -174,7 +210,8 @@ const BookingTable = props => {
 
 BookingTable.propTypes = {
   bookings: PropTypes.array.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  loading: PropTypes.bool.isRequired
 };
 
 export default BookingTable;

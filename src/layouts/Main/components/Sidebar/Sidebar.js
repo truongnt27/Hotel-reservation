@@ -49,7 +49,17 @@ const Sidebar = props => {
     {
       title: 'Bookings',
       href: '/bookings',
-      icon: <ListIcon />
+      icon: <ListIcon />,
+      subs: [
+        {
+          title: 'Add new',
+          href: '/bookings/addBooking',
+        },
+        {
+          title: 'List',
+          href: '/bookings/bookingList',
+        },
+      ]
     },
     {
       title: 'Rooms',

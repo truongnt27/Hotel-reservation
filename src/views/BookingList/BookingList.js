@@ -14,12 +14,13 @@ const useStyles = makeStyles(theme => ({
 
 const BookingList = () => {
   const classes = useStyles();
-
+  const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
   useEffect(() => {
     Axios.get('http://localhost:5000/bookings')
       .then(res => {
         setBookings(res.data);
+        setLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -31,6 +32,7 @@ const BookingList = () => {
       <div className={classes.content}>
         <BookingTable
           bookings={bookings}
+          loading={loading}
         />
       </div>
     </div>

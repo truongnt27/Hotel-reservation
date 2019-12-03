@@ -8,7 +8,8 @@ import {
   RoomList as RoomListView,
   RoomDetail as RoomDetailView,
   NotFound as NotFoundView,
-  BookingList as BookingListView
+  BookingList as BookingListView,
+  BookingAddNew as BookingAddNewView
 } from './views';
 
 const Routes = () => {
@@ -30,6 +31,18 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/bookings"
+      />
+      <RouteWithLayout
+        component={BookingAddNewView}
+        exact
+        layout={MainLayout}
+        path="/bookings/addBooking"
+      />
+      <RouteWithLayout
+        component={BookingListView}
+        exact
+        layout={MainLayout}
+        path="/bookings/bookingList"
       />
       <RouteWithLayout
         component={RoomDetailView}

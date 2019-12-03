@@ -14,6 +14,7 @@ const roomSchema = new mongoose.Schema({
   featured: { type: Boolean, default: false },
   description: String,
   extras: [String],
-  images: [String]
+  images: [String],
+  bookingRef: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
 })
 module.exports = mongoose.model('Room', roomSchema);

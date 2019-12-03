@@ -4,7 +4,51 @@ const router = express.Router();
 const Room = require('../models/room');
 const xlsx = require('xlsx');
 
-/* View all rooms*/
+/*Get all rooms*/
+router.get('/roomList', function (req, res, next) {
+  Room.find((err, rooms) => {
+    if (err) return res.json(err)
+    res.json(rooms)
+  })
+})
+
+
+/*Get all available rooms*/
+function checkAvailable(checkInDate, checkOutDate, room) {
+  const bookings = room.bookingRef;
+  return bookings.reduce((prev, current) => {
+    if (checkInDate > current.checkInDate &&
+      checkInDate < current.checkOutDate) {
+      return false && prev
+    }
+    else if (checkInDate > current.checkOutDate) {
+      return true && prev
+    }
+    else if (checkInDate < current.checkInDate &&
+      checkOutDate < current.checkInDate) {
+      return true && prev
+    }
+    else return false && prev
+  }, true)
+}
+router.get('/vailableRoomList', function (req, res, next) {
+  const checkInDate = req.query.checkInDate;
+  const checkOutDate = req.query.checkOutDate;
+  const result = [];
+
+  Room.find().populate('bookingRef').exec((err, rooms) => {
+    if (err) return res.json(err)
+    rooms.forEach(room => {
+
+      if (checkAvailable(checkInDate, checkOutDate, room))
+        result.push(room)
+    })
+    res.json(result)
+  })
+})
+
+
+/* Get all rooms with pagination*/
 router.get('/', function (req, res, next) {
   const pageSize = parseInt((req.query.pageSize > 0) ? req.query.pageSize : 1);
   const pageIndex = (req.query.pageIndex > 0) ? req.query.pageIndex : 1;
@@ -80,7 +124,7 @@ router.post('/deleteRoom', function (req, res, next) {
 });
 
 
-/*export excel rooms*/
+/*Export excel rooms*/
 router.get('/exportExcel', function (req, res, next) {
   Room.find((err, rooms) => {
     if (err) return err;
