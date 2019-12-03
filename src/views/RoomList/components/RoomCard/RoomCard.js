@@ -115,12 +115,14 @@ const RoomCard = props => {
           </IconButton>
         </Grid>
       </CardActions>
-    </ Card>
+    </Card>
   );
 };
 
 RoomCard.propTypes = {
   className: PropTypes.string,
+  onOpenPopup: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
   room: PropTypes.object.isRequired
 };
 

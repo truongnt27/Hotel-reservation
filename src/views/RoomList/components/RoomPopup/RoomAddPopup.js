@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { makeStyles } from '@material-ui/styles';
-import CloseIcon from '@material-ui/icons/Close'
+import CloseIcon from '@material-ui/icons/Close';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+
 import {
   Grid,
   Button,
   Dialog,
   IconButton,
   TextField,
-  Link,
-  FormHelperText,
   Checkbox,
   Typography,
   Input
@@ -334,12 +335,13 @@ const RoomAddPopup = props => {
                   type="file"
                 />
                 <label htmlFor="contained-button-file">
-                  <Button
+                  <IconButton
+                    aria-label="upload picture"
+                    color="primary"
                     component="span"
-                    variant="contained"
                   >
-                    Upload
-                  </Button>
+                    <PhotoCamera />
+                  </IconButton>
                 </label>
               </Grid>
               <Grid>
@@ -398,5 +400,9 @@ const RoomAddPopup = props => {
       </Dialog>
     </div>
   );
+}
+RoomAddPopup.propTypes = {
+  onClosePopup: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
 }
 export default RoomAddPopup;

@@ -4,7 +4,7 @@ import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-import { RoomsToolbar, RoomCard, RoomAddPopup, RoomEditPopup, RoomDeletePopup } from './components';
+import { RoomsToolbar, RoomCard, RoomAddPopup, RoomEditPopup, RoomDeletePopup, RoomLoading } from './components';
 import Axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
@@ -31,6 +31,7 @@ const initPopup = {
 const RoomList = () => {
   const classes = useStyles();
 
+  const [loading, setLoading] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [open, setOpen] = useState(initPopup);
   const [selectedRoom, setSelectedRoom] = useState({});
@@ -96,6 +97,7 @@ const RoomList = () => {
     });
   }
   useEffect(() => {
+    setLoading(true);
     Axios.get('http://localhost:5000/rooms', {
       params: {
         pageIndex,
@@ -106,6 +108,7 @@ const RoomList = () => {
       .then(res => {
         setRooms(res.data.roomChunks);
         setTotalRoom(res.data.totalRoom);
+        setLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -139,6 +142,7 @@ const RoomList = () => {
               />
             </Grid>
           )) : <Typography variant="body1">No rooms.</Typography>}
+          {loading ? <RoomLoading /> : null}
         </Grid>
       </div>
       <div className={classes.pagination}>
