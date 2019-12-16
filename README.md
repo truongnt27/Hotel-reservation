@@ -25,6 +25,6 @@
 - More freebies like this one: <https://devias.io>
 
 
-## Contact Us
+## Contact Me
 
-- Email Us: truongn0279@gmail.com
+- Email: truongn0279@gmail.com
